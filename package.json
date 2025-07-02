@@ -1,8 +1,11 @@
 {
   "name": "@xalia/mcp-googledocs-server",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "type": "module",
-  "main": "index.js",
+  "main": "./dist/server.js",
+  "bin": {
+    "mcp-googledocs-server": "./dist/server.js"
+  },
   "scripts": {
     "test": "node --test tests/",
     "build": "tsc"
