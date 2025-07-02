@@ -34,10 +34,10 @@ async function initializeGoogleClient() {
 if (googleDocs && googleDrive) return { authClient, googleDocs, googleDrive };
 if (!authClient) { // Check authClient instead of googleDocs to allow re-attempt
 try {
-console.error("Attempting to authorize Google API client...");
 if (hostAuth) {
   authClient = authorizeFromHost();
 } else {
+console.error("Attempting to authorize Google API client...");
 const client = await authorize();
 authClient = client; // Assign client here
 }
@@ -1378,6 +1378,7 @@ if (process.argv[2] === "--host-auth") {
 }
 await initializeGoogleClient(); // Authorize BEFORE starting listeners
 console.error("Starting Ultimate Google Docs MCP server...");
+console.error(`Host auth mode: ${hostAuth}`);
 
       // Using stdio as before
       const configToUse = {
