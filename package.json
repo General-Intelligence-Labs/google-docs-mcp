@@ -1,5 +1,5 @@
 {
-  "name": "mcp-googledocs-server",
+  "name": "@xalia/mcp-googledocs-server",
   "version": "1.1.0",
   "type": "module",
   "main": "index.js",
