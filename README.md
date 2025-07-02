@@ -55,7 +55,7 @@ Before you start, make sure you have:
 
 ## Setup Instructions
 
-Follow these steps carefully to get your own instance of the server running.
+Follow these steps carefully to get your own instance of the server running. (These instructions differ for remotely hosted MCP servers, see [Server Hosting](#server-hosting) below.)
 
 ### Step 1: Google Cloud Project & Credentials (The Important Bit!)
 
@@ -234,6 +234,23 @@ Claude will automatically launch your server in the background when needed using
   - Ensure you enabled the correct APIs (Docs, Drive).
   - Make sure you added your email as a Test User on the OAuth Consent Screen.
   - Verify the `credentials.json` file is correctly placed in the project root.
+
+---
+
+## Server Hosting
+When hosting this MCP server remotely, the host may wish to independently manage and provide the Google API access key. In this case they launch the server with the `--hostAuth` flag and provide user's valid access token via the `GOOGLE_API_ACCESS_TOKEN`:
+```json
+"google-docs-mcp": {
+          "command": "node",
+          "args": [
+            "/PATH/TO/YOUR/CLONED/REPO/mcp-googledocs-server/dist/server.js",
+            "--hostAuth"
+          ],
+          "env": {
+            "GOOGLE_API_ACCESS_TOKEN": "<user_access_token>"
+          }
+        }
+```
 
 ---
 

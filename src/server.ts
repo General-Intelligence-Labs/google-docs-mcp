@@ -2,7 +2,7 @@
 import { FastMCP, UserError } from 'fastmcp';
 import { z } from 'zod';
 import { google, docs_v1, drive_v3 } from 'googleapis';
-import { authorize } from './auth.js';
+import { authorize, authorizeFromHost } from './auth.js';
 import { OAuth2Client } from 'google-auth-library';
 
 // Import types and helpers
@@ -25,16 +25,23 @@ let authClient: OAuth2Client | null = null;
 let googleDocs: docs_v1.Docs | null = null;
 let googleDrive: drive_v3.Drive | null = null;
 
+// Get access token from MCP server's host
+let hostAuth = false;
+
 // --- Initialization ---
 async function initializeGoogleClient() {
 if (googleDocs && googleDrive) return { authClient, googleDocs, googleDrive };
 if (!authClient) { // Check authClient instead of googleDocs to allow re-attempt
 try {
 console.error("Attempting to authorize Google API client...");
+if (hostAuth) {
+  authClient = authorizeFromHost();
+} else {
 const client = await authorize();
 authClient = client; // Assign client here
-googleDocs = google.docs({ version: 'v1', auth: authClient });
-googleDrive = google.drive({ version: 'v3', auth: authClient });
+}
+googleDocs = google.docs({ version: 'v1', auth: authClient! });
+googleDrive = google.drive({ version: 'v3', auth: authClient! });
 console.error("Google API client authorized successfully.");
 } catch (error) {
 console.error("FATAL: Failed to initialize Google API client:", error);
@@ -1365,6 +1372,9 @@ try {
 // --- Server Startup ---
 async function startServer() {
 try {
+if (process.argv[2] === "--host-auth") {
+    hostAuth = true;
+}
 await initializeGoogleClient(); // Authorize BEFORE starting listeners
 console.error("Starting Ultimate Google Docs MCP server...");
 

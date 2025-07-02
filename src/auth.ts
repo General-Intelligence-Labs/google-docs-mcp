@@ -99,3 +99,17 @@ export async function authorize(): Promise<OAuth2Client> {
   client = await authenticate();
   return client;
 }
+
+export function authorizeFromHost(): OAuth2Client {
+  const accessToken = process.env.GOOGLE_API_ACCESS_TOKEN;
+  if (!accessToken) {
+    throw new Error("Missing GOOGLE_API_ACCESS_TOKEN environment variable.");
+  }
+
+  const client = new OAuth2Client();
+  client.setCredentials({
+    access_token: accessToken,
+    scope: SCOPES.join(" "),
+  });
+  return client;
+}
